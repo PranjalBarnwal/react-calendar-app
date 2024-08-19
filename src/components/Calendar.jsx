@@ -134,74 +134,38 @@ const Calendar = () => {
           </select>
         </div>
         <ul className="list-disc pl-5">
-          {filteredEvents.map(event => (
-            <li key={event.id} className="flex justify-between items-center mb-2">
-              <div>
-                <span className={`w-2.5 h-2.5 rounded-full ${categoryColors[event.category]} inline-block`} /> 
-                {event.title} - {event.category}
-              </div>
-              <div>
-                <button
-                  className="text-blue-500 dark:text-blue-300 hover:underline mx-2"
-                  onClick={() => {
-                    setSelectedDate(new Date(event.date));
-                    setShowForm(true);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  className="text-red-500 dark:text-red-300 hover:underline"
-                  onClick={() => deleteEvent(event.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
+          {filteredEvents.map(event => {
+            const eventDate = new Date(event.date);
+            const formattedDate = format(eventDate, 'MMMM d, yyyy');
+            return (
+              <li key={event.id} className="flex justify-between items-center mb-2">
+                <div className="flex items-center">
+                  <span className={`w-2.5 h-2.5 rounded-full ${categoryColors[event.category]} inline-block`} />
+                  <span className="ml-2">
+                    {event.title} - {event.category} - {formattedDate}
+                  </span>
+                </div>
+                <div>
+                  <button
+                    className="text-blue-500 dark:text-blue-300 hover:underline mx-2"
+                    onClick={() => {
+                      setSelectedDate(new Date(event.date));
+                      setShowForm(true);
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="text-red-500 dark:text-red-300 hover:underline"
+                    onClick={() => deleteEvent(event.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
-      </div>
-      <div className="mt-6">
-     <ul className="list-disc pl-5 mt-2">
-  {selectedDate && filteredEvents
-    .filter(event => {
-      const eventDate = new Date(event.date);
-      return eventDate.toDateString() === selectedDate.toDateString();
-    })
-    .map(event => {
-      const eventDate = new Date(event.date);
-      console.log(eventDate);
-      
-      const formattedDate = format(eventDate, 'MMMM d, yyyy');
-      return (
-        <li key={event.id} className="flex justify-between items-center mb-2">
-          <div className="flex items-center">
-            <span className={`w-2.5 h-2.5 rounded-full ${categoryColors[event.category]} inline-block`} />
-            <span className="ml-2">
-              {event.title} - {event.category} - {formattedDate}
-            </span>
-          </div>
-          <div>
-            <button
-              className="text-blue-500 dark:text-blue-300 hover:underline mx-2"
-              onClick={() => {
-                setSelectedDate(new Date(event.date));
-                setShowForm(true);
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="text-red-500 dark:text-red-300 hover:underline"
-              onClick={() => deleteEvent(event.id)}
-            >
-              Delete
-            </button>
-          </div>
-        </li>
-      );
-    })}
-</ul>
       </div>
     </div>
   );
